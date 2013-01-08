@@ -1,7 +1,4 @@
-package com.wk.rivers;
-
-import java.net.URI;
-import java.net.URISyntaxException;
+package com.wk.rivers.process;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
@@ -13,40 +10,37 @@ import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.StatusListener;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-
-import com.wk.rivers.TwitterStreamDaemonStatusListener;
+import com.wk.rivers.process.TwitterStreamDaemonStatusListener;
 
 public class TwitterStreamDaemon {
-	private CommandLine mCommandLine;
 	
 	private TwitterStream mStream;
 	private FilterQuery mFilter;
 	private String[] mTrack;
 	private long[] mFollow;
+	private String mRedisURI;
+	private String mRedisKeyspace;
 	
-	private Jedis jedisClient;
-	private static JedisPool pool;
+	private ConfigurationBuilder mTwitterAuth;
+	private CommandLine mCommandLine;
 	
-	private ConfigurationBuilder auth;
-
 	public TwitterStreamDaemon(String consumerKey, String consumerSecret,
-			String accessToken, String accessTokenSecret, JedisPoolConfig config) {
-		auth = new ConfigurationBuilder();
-		auth.setOAuthConsumerKey(consumerKey)
+			String accessToken, String accessTokenSecret, String redisURI,
+			String redisKeyspace) {
+		mTwitterAuth = new ConfigurationBuilder();
+		mTwitterAuth.setOAuthConsumerKey(consumerKey)
 		.setOAuthConsumerSecret(consumerSecret)
 		.setOAuthAccessToken(accessToken)
 		.setOAuthAccessTokenSecret(accessTokenSecret);
 		
-		pool = new JedisPool(config, "");
+		mRedisURI = redisURI;
+		mRedisKeyspace = redisKeyspace;
 	}
 
 	public TwitterStream buildStream() {	
-		TwitterStream stream = new TwitterStreamFactory(auth.build()).getInstance();
+		TwitterStream stream = new TwitterStreamFactory(mTwitterAuth.build()).getInstance();
 		//LOL @ class name (my actual life)
-		StatusListener listener = new TwitterStreamDaemonStatusListener();
+		StatusListener listener = new TwitterStreamDaemonStatusListener(mRedisURI, mRedisKeyspace);
 		stream.addListener(listener);
 		// let's try to handle disconnects (and connects?)
 		return stream;
@@ -83,21 +77,6 @@ public class TwitterStreamDaemon {
 		
 	}
 	
-	private Jedis getJedisClient(String jedisUrl) {
-		if (pool == null) {
-			URI uri;
-			try {
-				uri = new URI(jedisUrl);
-				String userInfo = uri.getUserInfo();
-				String[] infos = userInfo.split(":");
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-	
 	private static void setUpOptions() {
 		Options opts = new Options();
 		
@@ -113,8 +92,14 @@ public class TwitterStreamDaemon {
 		
 		OptionBuilder.withLongOpt("auth");
 		OptionBuilder.hasArgs(4);
+		OptionBuilder.isRequired();
 		OptionBuilder.withDescription("OAuth Credentials.");
+		opts.addOption(OptionBuilder.create('a'));
 		
+		OptionBuilder.withLongOpt("redis");
+		OptionBuilder.hasArg();
+		OptionBuilder.withDescription("Redis connection URI");
+		opts.addOption(OptionBuilder.create('r'));
 	}
 
 }

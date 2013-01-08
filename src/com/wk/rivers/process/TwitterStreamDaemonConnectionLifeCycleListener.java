@@ -1,4 +1,4 @@
-package com.wk.rivers;
+package com.wk.rivers.process;
 
 import twitter4j.ConnectionLifeCycleListener;
 
