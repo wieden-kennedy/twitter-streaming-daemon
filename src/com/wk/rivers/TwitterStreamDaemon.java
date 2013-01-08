@@ -1,19 +1,25 @@
 package com.wk.rivers;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
-import twitter4j.ConnectionLifeCycleListener;
 import twitter4j.FilterQuery;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.StatusListener;
 
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
 import com.wk.rivers.TwitterStreamDaemonStatusListener;
 
-public class TwitterStreamDaemon implements ConnectionLifeCycleListener {
+public class TwitterStreamDaemon {
 	private CommandLine mCommandLine;
 	
 	private TwitterStream mStream;
@@ -21,14 +27,20 @@ public class TwitterStreamDaemon implements ConnectionLifeCycleListener {
 	private String[] mTrack;
 	private long[] mFollow;
 	
-	private ConfigurationBuilder auth;
+	private Jedis jedisClient;
+	private static JedisPool pool;
 	
-	public TwitterStreamDaemon(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
+	private ConfigurationBuilder auth;
+
+	public TwitterStreamDaemon(String consumerKey, String consumerSecret,
+			String accessToken, String accessTokenSecret, JedisPoolConfig config) {
 		auth = new ConfigurationBuilder();
 		auth.setOAuthConsumerKey(consumerKey)
 		.setOAuthConsumerSecret(consumerSecret)
 		.setOAuthAccessToken(accessToken)
 		.setOAuthAccessTokenSecret(accessTokenSecret);
+		
+		pool = new JedisPool(config, "");
 	}
 
 	public TwitterStream buildStream() {	
@@ -37,7 +49,6 @@ public class TwitterStreamDaemon implements ConnectionLifeCycleListener {
 		StatusListener listener = new TwitterStreamDaemonStatusListener();
 		stream.addListener(listener);
 		// let's try to handle disconnects (and connects?)
-		stream.addConnectionLifeCycleListener(this);
 		return stream;
 	}
 
@@ -68,11 +79,26 @@ public class TwitterStreamDaemon implements ConnectionLifeCycleListener {
 	
 	public static void main(String[] args) {
 		//Given OAuth creds, redis keyspace, filter params etc.... start streaming
-		setUp();
+		setUpOptions();
 		
 	}
 	
-	private static void setUp() {
+	private Jedis getJedisClient(String jedisUrl) {
+		if (pool == null) {
+			URI uri;
+			try {
+				uri = new URI(jedisUrl);
+				String userInfo = uri.getUserInfo();
+				String[] infos = userInfo.split(":");
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
+	private static void setUpOptions() {
 		Options opts = new Options();
 		
 		OptionBuilder.withLongOpt("track");
@@ -91,23 +117,5 @@ public class TwitterStreamDaemon implements ConnectionLifeCycleListener {
 		
 	}
 
-	@Override
-	public void onCleanUp() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onConnect() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDisconnect() {
-		// TODO Auto-generated method stub
-		stop();
-		System.exit(1);
-	}
 }
 
