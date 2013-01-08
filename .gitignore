@@ -1,0 +1,10 @@
+bin/
+.classpath
+.project
+*.class
+*~
+
+*.lock
+*.DS_Store
+*.swp
+*.out
