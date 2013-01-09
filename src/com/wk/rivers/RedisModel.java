@@ -40,7 +40,7 @@ public class RedisModel {
 	}
 	
 	private Jedis getClient() {
-		if (mJedis == null) {		
+		if (mJedis == null || !mJedis.isConnected()) {		
 			URI uri = URI.create(mRedisURI);
 			if (uri.getScheme() != null && uri.getScheme().equals("redis")) {
 				String host = uri.getHost();
