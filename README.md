@@ -3,7 +3,14 @@ Twitter Streaming Daemon
 
 A Command line tool for pulling a filtered Twitter stream and placing the tweets into a Redis set.
 
-Run it via 
+Build it (in project root):
+
+          mvn assembly:assembly
+          
+You can find artifacts in /target
+
+Run it:
+
           java -jar TwitterStreamDaemon-0.0.1-SNAPSHOT-jar-with-dependencies.jar
           
 Don't forget your command line options....
