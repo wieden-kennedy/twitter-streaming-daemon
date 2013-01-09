@@ -15,30 +15,22 @@ public class TwitterStreamDaemonStatusListener implements StatusListener  {
 	}
 	
 	public void onException(Exception exception) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void onDeletionNotice(StatusDeletionNotice deletion) {
-		// TODO Auto-generated method stub
-		
 	}
 	
-	public void onScrubGeo(long arg0, long arg1) {
-		// TODO Auto-generated method stub
-		
+	public void onScrubGeo(long arg0, long arg1) {		
 	}
 	
 	public void onStatus(Status status) {
 		push(status);
 	}
 	
-	public void onTrackLimitationNotice(int limit) {
-		// TODO Auto-generated method stub
-		
+	public void onTrackLimitationNotice(int limit) {		
 	}
 	
-	private void push(Status status) {
+	private void push(Status status) {		
 		if (!mTweets.contains(status)) {
 			mTweets.add(status);
 		}
