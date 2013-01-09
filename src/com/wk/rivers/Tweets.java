@@ -5,7 +5,6 @@ import net.sf.json.JSONObject;
 import twitter4j.Status;
 
 public class Tweets extends RedisModel {
-	
 	private Tweets(String river, String ks, String redisURI) {
 		super(river, ks, redisURI);
 	}

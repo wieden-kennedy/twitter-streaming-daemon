@@ -39,6 +39,10 @@ public class RedisModel {
 		return getClient().zcard(mKeySpace);		
 	}
 	
+	/**
+	 * Get a Redis client
+	 * @return
+	 */
 	private Jedis getClient() {
 		if (mJedis == null || !mJedis.isConnected()) {		
 			URI uri = URI.create(mRedisURI);
@@ -53,7 +57,7 @@ public class RedisModel {
 				System.out.println(mRedisDB);
 				mJedis = new Jedis(host, port);
 				mJedis.select(mRedisDB);
-				mJedis.auth(password);
+				mJedis.auth(password);			
 			}
 		}
 		return mJedis;

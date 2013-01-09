@@ -3,6 +3,7 @@ package com.wk.rivers.process;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -112,8 +113,7 @@ public class TwitterStreamDaemon {
 			}
 			daemon.start();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			printUsage(opts);
 			System.exit(1);
 		}	
 	}
@@ -150,6 +150,12 @@ public class TwitterStreamDaemon {
 		OptionBuilder.withDescription("Redis keyspace to put tweets in");
 		opts.addOption(OptionBuilder.create("k"));
 		return opts;
+	}
+	
+	private static void printUsage(Options options) {
+		HelpFormatter help = new HelpFormatter();
+		help.setWidth(80);
+		help.printHelp("-a <consumerkey>,<consumersecret>,<accesstoken>,<accesstokensecret> -r <redisurl> -k <keyspace> [-f <userid1>,... | -t <term1>,<term2>]", options);
 	}
 }
 
