@@ -1,8 +1,7 @@
 package com.wk.rivers;
 
-import net.sf.json.JSONObject;
-
 import twitter4j.Status;
+import twitter4j.json.DataObjectFactory;
 
 public class Tweets extends RedisModel {
 	private Tweets(String river, String ks, String redisURI) {
@@ -19,12 +18,12 @@ public class Tweets extends RedisModel {
 	
 	public void add(Status status) {
 		Double rank = new Double(status.getId());
-		String member = toJson(status).toString();
+		String member = toJson(status);
 		this.add(rank, member, new Long(status.getId()).toString());
 	}
 	
-	private JSONObject toJson(Status status) {
-		JSONObject json = JSONObject.fromObject(status);
-		return json;
+	private String toJson(Status status) {
+		System.out.println(DataObjectFactory.getRawJSON(status));
+		return DataObjectFactory.getRawJSON(status);
 	}
 }

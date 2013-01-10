@@ -33,7 +33,8 @@ public class TwitterStreamDaemon {
 		mTwitterAuth.setOAuthConsumerKey(consumerKey)
 		.setOAuthConsumerSecret(consumerSecret)
 		.setOAuthAccessToken(accessToken)
-		.setOAuthAccessTokenSecret(accessTokenSecret);
+		.setOAuthAccessTokenSecret(accessTokenSecret)
+		.setJSONStoreEnabled(true);
 		
 		mRedisURI = redisURI;
 		mRedisKeyspace = redisKeyspace;
@@ -113,6 +114,7 @@ public class TwitterStreamDaemon {
 			}
 			daemon.start();
 		} catch (ParseException e) {
+			System.out.println(e);
 			printUsage(opts);
 			System.exit(1);
 		}	

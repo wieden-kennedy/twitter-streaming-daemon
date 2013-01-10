@@ -51,13 +51,17 @@ public class RedisModel {
 				System.out.println(host);
 				int port = uri.getPort();
 				System.out.println(port);
-				String password = uri.getUserInfo().split(":", 2)[1];
-				System.out.println(password);
+				String userInfo = uri.getUserInfo();				
 				mRedisDB = Integer.parseInt(uri.getPath().split("/", 2)[1]);
 				System.out.println(mRedisDB);
 				mJedis = new Jedis(host, port);
 				mJedis.select(mRedisDB);
-				mJedis.auth(password);			
+				
+				if (userInfo != null){
+					String password = userInfo.split(":", 2)[1];
+					System.out.println(password);
+					mJedis.auth(password);
+				}
 			}
 		}
 		return mJedis;
