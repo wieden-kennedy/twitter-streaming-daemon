@@ -54,14 +54,15 @@ public class RedisModel {
 				String userInfo = uri.getUserInfo();				
 				mRedisDB = Integer.parseInt(uri.getPath().split("/", 2)[1]);
 				System.out.println(mRedisDB);
+				System.out.println("userInfo: "+userInfo);
 				mJedis = new Jedis(host, port);
-				mJedis.select(mRedisDB);
-				
 				if (userInfo != null){
+					System.out.println("userinfo: "+userInfo);
 					String password = userInfo.split(":", 2)[1];
 					System.out.println(password);
 					mJedis.auth(password);
 				}
+				mJedis.select(mRedisDB);
 			}
 		}
 		return mJedis;
