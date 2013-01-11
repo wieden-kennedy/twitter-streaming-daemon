@@ -28,8 +28,7 @@ public class RedisModel {
 			return getClient().sismember(mKeySpace+":ids", id);	
 	}
 	
-	public void add(Double rank, String member, String id){
-		System.out.println("Adding: "+member);
+	public void add(Double rank, String member, String id){		
 		if (getClient().sadd(mKeySpace+":ids", id) != 0) {
 			getClient().zadd(mKeySpace, rank, member);
 		}
@@ -47,19 +46,14 @@ public class RedisModel {
 		if (mJedis == null || !mJedis.isConnected()) {		
 			URI uri = URI.create(mRedisURI);
 			if (uri.getScheme() != null && uri.getScheme().equals("redis")) {
-				String host = uri.getHost();
-				System.out.println(host);
-				int port = uri.getPort();
-				System.out.println(port);
+				String host = uri.getHost();				
+				int port = uri.getPort();				
 				String userInfo = uri.getUserInfo();				
-				mRedisDB = Integer.parseInt(uri.getPath().split("/", 2)[1]);
-				System.out.println(mRedisDB);
-				System.out.println("userInfo: "+userInfo);
+				mRedisDB = Integer.parseInt(uri.getPath().split("/", 2)[1]);				
+				
 				mJedis = new Jedis(host, port);
 				if (userInfo != null){
-					System.out.println("userinfo: "+userInfo);
-					String password = userInfo.split(":", 2)[1];
-					System.out.println(password);
+					String password = userInfo.split(":", 2)[1];					
 					mJedis.auth(password);
 				}
 				mJedis.select(mRedisDB);
