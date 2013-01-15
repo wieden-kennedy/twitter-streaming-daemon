@@ -31,7 +31,12 @@ public class RedisModel {
 	public void add(Double rank, String member, String id){		
 		if (getClient().sadd(mKeySpace+":ids", id) != 0) {
 			getClient().zadd(mKeySpace, rank, member);
+			broadcastCount();
 		}
+	}
+	
+	public void broadcastCount() {
+		getClient().publish(mKeySpace, len().toString());
 	}
 	
 	public Long len() {
