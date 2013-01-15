@@ -19,11 +19,10 @@ public class Tweets extends RedisModel {
 	public void add(Status status) {
 		Double rank = new Double(status.getId());
 		String member = toJson(status);
-		this.add(rank, member, new Long(status.getId()).toString());
+		super.add(rank, member, new Long(status.getId()).toString());
 	}
 	
 	private String toJson(Status status) {
-		System.out.println(DataObjectFactory.getRawJSON(status));
 		return DataObjectFactory.getRawJSON(status);
 	}
 }
