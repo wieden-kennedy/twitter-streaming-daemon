@@ -26,5 +26,4 @@ Don't forget your command line options....
 TODO:
 =====
 * Add comments and tests
-* Ensure compatibility with "Rivers"
 * Ensure long-lived Jedis client is reliable
