@@ -7,7 +7,7 @@
 	<name>Twitter Stream Daemon</name>
 	<description>Run a Twitter streaming connection on the command line. Put results in Redis.</description>
 	<build>
-	    <sourceDirectory>src/</sourceDirectory>	    
+	    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>	    
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
