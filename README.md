@@ -5,13 +5,13 @@ A Command line tool for pulling a filtered Twitter stream and placing the tweets
 
 Build it (in project root):
 
-          mvn assembly:assembly
+          mvn package
           
 You can find artifacts in /target
 
 Run it:
 
-          java -jar TwitterStreamDaemon-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+          java -cp TwitterStreamDaemon-0.0.2-SNAPSHOT-jar-with-dependencies.jar com.wk.rivers.process.TwitterStreamDaemon
           
 Don't forget your command line options....
 
