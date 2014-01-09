@@ -24,6 +24,12 @@ public class RedisModel {
 		return getClient().zrevrange(mKeySpace, 0, -1);
 	}
 	
+	public Set<String> page(int pageSize, int page) {
+		int start = pageSize * page;
+		int end = pageSize * page + pageSize;
+		return getClient().zrevrange(mKeySpace, start, end);
+	}
+	
 	public boolean contains(String id) {		
 			return getClient().sismember(mKeySpace+":ids", id);	
 	}

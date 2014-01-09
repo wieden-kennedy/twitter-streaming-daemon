@@ -2,6 +2,7 @@ package com.wk.rivers.process;
 
 import com.wk.rivers.Tweets;
 
+import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
@@ -32,7 +33,11 @@ public class TwitterStreamDaemonStatusListener implements StatusListener  {
 	
 	private void push(Status status) {		
 		if (!mTweets.contains(status)) {
+			System.out.println(status);
 			mTweets.add(status);
 		}
+	}
+
+	public void onStallWarning(StallWarning arg0) {
 	}	
 }
