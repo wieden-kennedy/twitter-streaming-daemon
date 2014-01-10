@@ -32,8 +32,7 @@ public class TwitterStreamDaemonStatusListener implements StatusListener  {
 	}
 	
 	private void push(Status status) {		
-		if (!mTweets.contains(status)) {
-			System.out.println(status);
+		if (!mTweets.contains(status)) {			
 			mTweets.add(status);
 		}
 	}

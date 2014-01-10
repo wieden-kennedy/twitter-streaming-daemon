@@ -90,11 +90,11 @@ public class TwitterSearchDaemon {
 	public void searchTwitter(String queryString, Tweets river) {
 		QueryResult result;
 		Query query = new Query(queryString);
-		query.setResultType(Query.RECENT);
-		query.setCount(100);
+		query.setResultType(Query.RECENT);	
 	
 		do {
 			long max = 0;
+			query.setCount(100);
 			result = doQuery(query);
 			
 			System.out.println(result.getCount());

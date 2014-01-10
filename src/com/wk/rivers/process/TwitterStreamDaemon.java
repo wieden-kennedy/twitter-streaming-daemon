@@ -125,6 +125,7 @@ public class TwitterStreamDaemon {
 		
 		OptionBuilder.withLongOpt("track");
 		OptionBuilder.hasArgs();
+		OptionBuilder.withValueSeparator(',');
 		OptionBuilder.withDescription("Terms to track.");
 		opts.addOption(OptionBuilder.create('t'));
 		
