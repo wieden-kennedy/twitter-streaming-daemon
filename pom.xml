@@ -8,7 +8,7 @@
 	<description>Run a Twitter streaming connection on the command line. Put results in Redis.</description>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-		<plugins>			
+		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
@@ -25,7 +25,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.0</version>
+				<version>2.1</version>
 				<configuration>
 
 				</configuration>
